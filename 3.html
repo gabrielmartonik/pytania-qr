@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pytanie Quizowe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .karta {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 { color: #333; font-size: 22px; text-align: center; margin-top: 0; }
+        .opcja {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: left;
+        }
+        .opcja:hover { background: #f0f0f0; }
+        .opcja:disabled { cursor: default; }
+        /* Kolory poprawnych i błędnych odpowiedzi */
+        .poprawna { background: #d4edda !important; border-color: #28a745 !important; color: #155724; }
+        .bledna { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24; }
+        
+        #komunikat {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="karta">
+        
+        <!-- 1. TUTAJ WPISZ SWOJE PYTANIE -->
+        <h1>Co otrzymuje się po złożeniu przyżeczenia harcerskiego?</h1>
+
+        <div id="odpowiedzi">
+            <!-- 2. TUTAJ WPISZ ODPOWIEDZI -->
+            <!-- Przy dobrej odpowiedzi zmień słowo "false" na "true" -->
+            <button class="opcja" onclick="sprawdz(this, false, 'A')">A) Szary sznur</button>
+            <button class="opcja" onclick="sprawdz(this, false, 'B')">B) Lilijkę harcerską</button>
+            <button class="opcja" onclick="sprawdz(this, true, 'C')">C) Krzyż harcerski</button>
+            <button class="opcja" onclick="sprawdz(this, false, 'D')">D) przypinkę z orłem</button>
+        </div>
+
+        <div id="komunikat">
+            <strong id="tytul-komunikatu"></strong><br><br>
+            <!-- 3. TUTAJ WPISZ WYTŁUMACZENIE -->
+            Po złożeniu przyżeczenia harcerskiego otrzymuje się krzyż harcerski wzorowany na najwyższym odznaczeniu polskiego wojska - virtuti militari. 
+        </div>
+
+    </div>
+
+    <script>
+        function sprawdz(przycisk, czyPoprawna, litera) {
+            const wszystkiePrzyciski = document.querySelectorAll('.opcja');
+            const komunikat = document.getElementById('komunikat');
+            const tytul = document.getElementById('tytul-komunikatu');
+
+            // Krok 1: Zablokuj wszystkie przyciski, żeby nie można było klikać dwa razy
+            wszystkiePrzyciski.forEach(btn => btn.disabled = true);
+
+            // Krok 2: Oznacz odpowiedź i ustaw treść
+            if (czyPoprawna) {
+                przycisk.classList.add('poprawna');
+                tytul.innerText = "Dobrze!";
+                komunikat.style.backgroundColor = "#d4edda";
+                komunikat.style.color = "#155724";
+            } else {
+                przycisk.classList.add('bledna');
+                tytul.innerText = "Źle!";
+                komunikat.style.backgroundColor = "#f8d7da";
+                komunikat.style.color = "#721c24";
+                
+                // Automatycznie pokaż na zielono, która odpowiedź była tą dobrą
+                wszystkiePrzyciski.forEach(btn => {
+                    if(btn.getAttribute('onclick').includes('true')) {
+                        btn.classList.add('poprawna');
+                    }
+                });
+            }
+            
+            // Krok 3: Pokaż pudełko z wytłumaczeniem
+            komunikat.style.display = "block";
+        }
+    </script>
+</body>
+</html>
